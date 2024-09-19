@@ -1,6 +1,18 @@
 import csv
+import argparse
 from tkinter.filedialog import askopenfilename
 
+import argparse
+
+# Add this at the top of your script
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Text-Based Data Cleaning Assistant")
+    # parser.add_argument('input_file', help='Path to the input CSV file')
+    # parser.add_argument('output_file', help='Path to save the cleaned CSV file')
+    parser.add_argument('--trim-whitespace', action='store_true', help='Trim leading and trailing whitespace')
+    parser.add_argument('--lowercase', action='store_true', help='Convert text to lowercase')
+    parser.add_argument('--remove-duplicates', action='store_true', help='Remove duplicate rows')
+    return parser.parse_args()
 def read_csv(filepath):
     rows = []
     try:
@@ -58,11 +70,16 @@ if __name__ == "__main__":
     filepath = askopenfilename()
     data = read_csv(filepath)
 
+    args = parse_arguments()
+
     if data:
         print("Cleaning data... ")
-        data = remove_trailing_whitespace(data)
-        data = convert_to_lowercase(data)
-        data = remove_duplicates(data)
+        if args.trim_whitespace:
+            data = remove_trailing_whitespace(data)
+        if args.lowercase:
+            data = convert_to_lowercase(data)
+        if args.remove_duplicates:
+            data = remove_duplicates(data)
 
     else:
         print("No data to process!")
