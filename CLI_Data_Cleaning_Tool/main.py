@@ -1,6 +1,8 @@
 import csv
 import argparse
-from tkinter.filedialog import askopenfilename
+from time import sleep
+from tqdm import tqdm
+from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 import argparse
 
@@ -40,7 +42,7 @@ def remove_duplicates(rows):
     """Removes duplicate rows in data"""
     unique_rows = []
     seen = set()
-    for row in rows:
+    for row in tqdm(rows, desc="removing duplicates..."):
         row_tuple = tuple(row)
         if row_tuple not in seen:
             seen.add(row_tuple)
@@ -51,7 +53,7 @@ def remove_duplicates(rows):
 def convert_to_lowercase(rows):
     """Converts all data strings to lowercase"""
     new_rows = []
-    for row in rows:
+    for row in tqdm(rows, desc="Converting to lowercase..."):
         new_row = [cell.lower() if isinstance(cell, str) else cell for cell in row]
         new_rows.append(new_row)
     return new_rows
@@ -60,7 +62,7 @@ def convert_to_lowercase(rows):
 def remove_trailing_whitespace(rows):
     """Removes trailing whitespace from all data strings"""
     new_rows = []
-    for row in rows:
+    for row in tqdm(rows, desc="Trimming whitespace..."):
         new_row = [cell.strip() if isinstance(cell, str) else cell for cell in row]
         new_rows.append(new_row)
     return new_rows
@@ -83,6 +85,8 @@ if __name__ == "__main__":
 
     else:
         print("No data to process!")
+
+    sleep(5)
         
-    filepath = askopenfilename()
+    filepath = asksaveasfilename()
     write_csv(filepath, data)
