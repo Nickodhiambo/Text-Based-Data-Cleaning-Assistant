@@ -40,32 +40,35 @@ def write_csv(filepath, rows):
 
 def remove_duplicates(rows):
     """Removes duplicate rows in data"""
+    header, data_rows = rows[0], rows[1:]
     unique_rows = []
     seen = set()
-    for row in tqdm(rows, desc="removing duplicates..."):
+    for row in tqdm(data_rows, desc="removing duplicates..."):
         row_tuple = tuple(row)
         if row_tuple not in seen:
             seen.add(row_tuple)
             unique_rows.append(row)
-    return unique_rows
+    return [header] + unique_rows
 
 
 def convert_to_lowercase(rows):
     """Converts all data strings to lowercase"""
+    header, data_rows = rows[0], rows[1:]
     new_rows = []
-    for row in tqdm(rows, desc="Converting to lowercase..."):
+    for row in tqdm(data_rows, desc="Converting to lowercase..."):
         new_row = [cell.lower() if isinstance(cell, str) else cell for cell in row]
         new_rows.append(new_row)
-    return new_rows
+    return [header] + new_rows
 
 
 def remove_trailing_whitespace(rows):
     """Removes trailing whitespace from all data strings"""
+    header, data_rows = rows[0], rows[1:]
     new_rows = []
-    for row in tqdm(rows, desc="Trimming whitespace..."):
+    for row in tqdm(data_rows, desc="Trimming whitespace..."):
         new_row = [cell.strip() if isinstance(cell, str) else cell for cell in row]
         new_rows.append(new_row)
-    return new_rows
+    return [header] + new_rows
 
 
 if __name__ == "__main__":
