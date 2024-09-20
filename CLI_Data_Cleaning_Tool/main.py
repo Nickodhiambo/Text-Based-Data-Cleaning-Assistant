@@ -1,19 +1,21 @@
 import csv
 import argparse
+import re
+import datetime
 from time import sleep
 from tqdm import tqdm
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 import argparse
 
-# Add this at the top of your script
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Text-Based Data Cleaning Assistant")
-    # parser.add_argument('input_file', help='Path to the input CSV file')
-    # parser.add_argument('output_file', help='Path to save the cleaned CSV file')
-    parser.add_argument('--trim-whitespace', action='store_true', help='Trim leading and trailing whitespace')
+    parser.add_argument('--trim_whitespace', action='store_true', help='Trim leading and trailing whitespace')
     parser.add_argument('--lowercase', action='store_true', help='Convert text to lowercase')
-    parser.add_argument('--remove-duplicates', action='store_true', help='Remove duplicate rows')
+    parser.add_argument('--remove_duplicates', action='store_true', help='Remove duplicate rows')
+    parser.add_argument('--validate_email', help='Check email is valid')
+    parser.add_argument('--standardize_phone', help='Standardize phone numbers')
+    parser.add_argument('--format_date', action='store_true', help='Validate and format dates')
     return parser.parse_args()
 def read_csv(filepath):
     rows = []
@@ -71,6 +73,64 @@ def remove_trailing_whitespace(rows):
     return [header] + new_rows
 
 
+def validate_email_format(rows, email_column):
+    """Checks if an email is valid"""
+    email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    
+    new_rows = []
+    header = rows[0]
+    new_rows.append(header)
+    
+    col_index = header.index(email_column)
+    for row in tqdm(rows[1:], desc="Validating emails..."):
+        if re.match(email_regex, row[col_index]):
+            new_rows.append(row)
+        else:
+            row[col_index] = "Invalid email"
+            new_rows.append(row)
+        
+    return new_rows
+
+
+def standardize_phone_numbers(rows, phone_column):
+    """Standardizes phone numbers per North American
+    format: (xxx) xxx-xxxx"""
+    phone_regex = r'(\d{3})[`^\d]*(\d{3})[`^\d]*(\d{4})'
+    new_rows = []
+    header = rows[0]
+    new_rows.append(header)
+    col_index = header.index(phone_column)
+    for row in tqdm(rows[1:], desc="Standardizing phone numbers..."):
+        if re.search(phone_regex, row[col_index]):
+            row[col_index] = re.sub(phone_regex, r'(\1) \2-\3', row[col_index])
+        else:
+            row[col_index] = "Invalid phone number"
+        new_rows.append(row)
+    return new_rows
+
+
+def validate_and_format_dates(rows, date_format="%Y-%m-%d"):
+    """Converts dates from `MM/DD/YYYY` to `YYYY-MM-DD`."""
+    new_rows = []
+
+    for row in rows:
+        new_row = []
+
+        for cell in row:
+            if isinstance(cell, str):
+                try:
+                    parsed_date = datetime.strptime(cell, "%m/%d/%Y")
+                    new_row.append(parsed_date.strftime(date_format))
+                except ValueError:
+                    new_row.append(cell)
+            else:
+                new_row.append(cell)
+        new_rows.append(new_row)
+    return new_rows
+
+
+
+
 if __name__ == "__main__":
     filepath = askopenfilename()
     data = read_csv(filepath)
@@ -85,6 +145,12 @@ if __name__ == "__main__":
             data = convert_to_lowercase(data)
         if args.remove_duplicates:
             data = remove_duplicates(data)
+        if args.validate_email:
+            data = validate_email_format(data, args.validate_email)
+        if args.standardize_phone:
+            data = standardize_phone_numbers(data, args.standardize_phone)
+        if args.format_date:
+            data = validate_and_format_dates(data)
 
     else:
         print("No data to process!")
