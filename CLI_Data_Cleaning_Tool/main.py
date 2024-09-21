@@ -96,10 +96,12 @@ def standardize_phone_numbers(rows, phone_column):
     """Standardizes phone numbers per North American
     format: (xxx) xxx-xxxx"""
     phone_regex = r'(\d{3})[`^\d]*(\d{3})[`^\d]*(\d{4})'
+    
     new_rows = []
     header = rows[0]
     new_rows.append(header)
     col_index = header.index(phone_column)
+    
     for row in tqdm(rows[1:], desc="Standardizing phone numbers..."):
         if re.search(phone_regex, row[col_index]):
             row[col_index] = re.sub(phone_regex, r'(\1) \2-\3', row[col_index])
