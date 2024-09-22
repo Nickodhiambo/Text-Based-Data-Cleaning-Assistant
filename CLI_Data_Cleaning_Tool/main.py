@@ -4,6 +4,7 @@ import re
 import datetime
 from time import sleep
 from tqdm import tqdm
+import openpyxl
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 import argparse
@@ -17,27 +18,68 @@ def parse_arguments():
     parser.add_argument('--standardize_phone', help='Standardize phone numbers')
     parser.add_argument('--format_date', action='store_true', help='Validate and format dates')
     return parser.parse_args()
+
+def read_file(filepath):
+    """Detects a file type and reads its contents accordingly"""
+    if filepath.endswith('.csv'):
+        read_csv(filepath)
+    elif filepath.endswith('.xlsx'):
+        read_excel(filepath)
+    elif filepath.endswith('.log') or filepath.endswith('.txt'):
+        read_text_file(filepath)
+    else:
+        print("Unsupported file type")
+        return []
 def read_csv(filepath):
-    rows = []
-    try:
-        with open(filepath, mode='r', newline='') as f:
-            reader = csv.reader(f)
-            rows = list(reader)
-    except FileNotFoundError:
-        print("The file at the specified path not found!")
-    except Exception as e:
-        print(f"An error occurred: {e}")
-    return rows
+    """Reads a CSV file and return its contents as a list of lists"""
+    with open(filepath, newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        return [row for row in reader]
+    
+
+def read_excel(filepath):
+    """Reads an Excel sheet and returns its contents as a list of lists"""
+    wb = openpyxl.load_workbook(filepath)
+    ws = wb.active
+    data = [[cell.value for cell in row] for row in ws.iter_rows()]
+    return data
+
+def read_text_file(filepath):
+    """Reads a text or log file line by line"""
+    with open(filepath) as f:
+        return [line.strip() for line in f.readlines()]
+    
+def write_file(file_path, data):
+    """Detects the file type and writes the content accordingly."""
+    if file_path.endswith('.csv'):
+        write_csv(file_path, data)
+    elif file_path.endswith('.xlsx'):
+        write_excel(file_path, data)
+    elif file_path.endswith('.log') or file_path.endswith('.txt'):
+        write_text_file(file_path, data)
+    else:
+        print("Unsupported file type.")
+
+def write_csv(filepath, data):
+
+    with open(filepath, mode='w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(data)
+    print(f'Data successfully written to {filepath}')
+
+def write_excel(filepath, data):
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    for row in data:
+        ws.append(row)
+    wb.save(filepath)
 
 
-def write_csv(filepath, rows):
-    try:
-        with open(filepath, mode='w', newline='') as f:
-            writer = csv.writer(f)
-            writer.writerows(rows)
-        print(f'Data successfully written to {filepath}')
-    except Exception as e:
-        print(f'An error occurred: {e}')
+def write_text_file(filepath, data):
+    with open(filepath, 'w') as f:
+        for line in data:
+            f.write(line + '\n')
+    
 
 
 def remove_duplicates(rows):
@@ -101,7 +143,7 @@ def standardize_phone_numbers(rows, phone_column):
     header = rows[0]
     new_rows.append(header)
     col_index = header.index(phone_column)
-    
+
     for row in tqdm(rows[1:], desc="Standardizing phone numbers..."):
         if re.search(phone_regex, row[col_index]):
             row[col_index] = re.sub(phone_regex, r'(\1) \2-\3', row[col_index])
@@ -135,7 +177,7 @@ def validate_and_format_dates(rows, date_format="%Y-%m-%d"):
 
 if __name__ == "__main__":
     filepath = askopenfilename()
-    data = read_csv(filepath)
+    data = read_file(filepath)
 
     args = parse_arguments()
 
@@ -160,4 +202,4 @@ if __name__ == "__main__":
     sleep(5)
         
     filepath = asksaveasfilename()
-    write_csv(filepath, data)
+    write_file(filepath, data)
