@@ -38,13 +38,24 @@ def read_csv(filepath):
         return [row for row in reader]
     
 
+# def read_excel(filepath):
+#     """Reads an Excel sheet and returns its contents as a list of lists"""
+    # wb = openpyxl.load_workbook(filepath)
+    # ws = wb.active
+    # data = [[cell.value for cell in row] for row in ws.iter_rows()]
+    # return data
 def read_excel(filepath):
-    """Reads an Excel sheet and returns its contents as a list of lists"""
+    """Reads an Excel file and returns its contents as a list of lists, including headers."""
     wb = openpyxl.load_workbook(filepath)
     ws = wb.active
-    data = [[cell.value for cell in row] for row in ws.iter_rows()]
-    return data
 
+    # Get the header row (assuming it's the first row)
+    header = [cell.value.strip() if isinstance(cell.value, str) else cell.value for cell in next(ws.iter_rows(min_row=1, max_row=1))]
+
+    # Get the rest of the data (from the second row onward)
+    data = [[cell.value for cell in row] for row in ws.iter_rows(min_row=2)]
+    
+    return header, data
 def read_text_file(filepath):
     """Reads a text or log file line by line"""
     with open(filepath, 'r') as f:
@@ -121,23 +132,43 @@ def remove_trailing_whitespace(rows):
     return [header] + new_rows
 
 
-def validate_email_format(rows, email_column):
-    """Checks if an email is valid"""
-    email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+# def validate_email_format(rows, email_column):
+#     """Checks if an email is valid"""
+#     email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
     
-    new_rows = []
-    header = rows[0]
-    new_rows.append(header)
+#     new_rows = []
+#     header = rows[0]
+#     new_rows.append(header)
     
-    col_index = header.index(email_column)
-    for row in tqdm(rows[1:], desc="Validating emails..."):
-        if re.match(email_regex, row[col_index]):
-            new_rows.append(row)
+#     col_index = header.index(email_column)
+#     for row in tqdm(rows[1:], desc="Validating emails..."):
+#         if re.match(email_regex, row[col_index]):
+#             new_rows.append(row)
+#         else:
+#             row[col_index] = "Invalid email"
+#             new_rows.append(row)
+        
+#     return new_rows
+def validate_email_format(data, email_column):
+    """Validates email format in the specified column."""
+    header, rows = data
+    
+    # Try to find the index of the email column in the header
+    try:
+        col_index = header.index(email_column)
+    except ValueError:
+        raise ValueError(f"Column '{email_column}' not found in the file header: {header}")
+
+    # Validate emails
+    for row in rows:
+        email = row[col_index]
+        if email and isinstance(email, str):
+            if not re.match(r'^\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b$', email):
+                row[col_index] = "Invalid email"
         else:
             row[col_index] = "Invalid email"
-            new_rows.append(row)
-        
-    return new_rows
+    
+    return [header] + rows
 
 
 def standardize_phone_numbers(rows, phone_column):
