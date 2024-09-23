@@ -1,10 +1,10 @@
 import csv
+import openpyxl
 import argparse
 import re
 import datetime
 from time import sleep
 from tqdm import tqdm
-import openpyxl
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 import argparse
@@ -18,6 +18,7 @@ def parse_arguments():
     parser.add_argument('--standardize_phone', help='Standardize phone numbers')
     parser.add_argument('--format_date', action='store_true', help='Validate and format dates')
     return parser.parse_args()
+
 
 def read_file(filepath):
     """Detects a file type and reads its contents accordingly"""
@@ -73,6 +74,7 @@ def write_excel(filepath, data):
     for row in data:
         ws.append(row)
     wb.save(filepath)
+    print(f'Data successfully written to {filepath}')
 
 
 def write_text_file(filepath, data):
@@ -80,7 +82,7 @@ def write_text_file(filepath, data):
         for line in data:
             f.write(line)
             print()
-    
+    print(f'Data successfully written to {filepath}')
 
 
 def remove_duplicates(rows):
