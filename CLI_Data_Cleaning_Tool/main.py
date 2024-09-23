@@ -22,11 +22,11 @@ def parse_arguments():
 def read_file(filepath):
     """Detects a file type and reads its contents accordingly"""
     if filepath.endswith('.csv'):
-        read_csv(filepath)
+        return read_csv(filepath)
     elif filepath.endswith('.xlsx'):
-        read_excel(filepath)
+        return read_excel(filepath)
     elif filepath.endswith('.log') or filepath.endswith('.txt'):
-        read_text_file(filepath)
+        return read_text_file(filepath)
     else:
         print("Unsupported file type")
         return []
@@ -78,7 +78,8 @@ def write_excel(filepath, data):
 def write_text_file(filepath, data):
     with open(filepath, 'w') as f:
         for line in data:
-            f.write(line + '\n')
+            f.write(line)
+            print()
     
 
 
