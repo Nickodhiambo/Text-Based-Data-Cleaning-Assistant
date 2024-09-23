@@ -47,7 +47,7 @@ def read_excel(filepath):
 
 def read_text_file(filepath):
     """Reads a text or log file line by line"""
-    with open(filepath) as f:
+    with open(filepath, 'r') as f:
         return [line.strip() for line in f.readlines()]
     
 def write_file(file_path, data):
@@ -78,10 +78,13 @@ def write_excel(filepath, data):
 
 
 def write_text_file(filepath, data):
-    with open(filepath, 'w') as f:
+    with open(filepath, 'w') as file:
         for line in data:
-            f.write(line)
-            print()
+            # Join lists into strings and write each line to the file
+            if isinstance(line, list):
+                file.write(''.join(str(item) for item in line) + '\n')
+            else:
+                file.write(str(line) + '\n')
     print(f'Data successfully written to {filepath}')
 
 
