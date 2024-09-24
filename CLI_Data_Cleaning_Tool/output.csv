@@ -1,9 +1,9 @@
 Name,Email,Phone,Date,Notes
-John Doe,john.doe@example.com,(123)-456-7890,03/15/2023,Good customer
-Jane Smith,Invalid email,123 456 7890,12/01/2022,Repeat customer
-Bob Williams,Invalid email,9876543210,15/08/2021,New entry
-Alice Johnson,Invalid email,456-789-0123,07/04/2021,Check details
-John Doe,john.doe@example.com,(123)-456-7890,03/15/2023,Good customer
-Jane Smith,Invalid email,123 456 7890,12/01/2022,Repeat customer
+John Doe,john.doe@example.com,(123)-456-7890,2023-03-15,Good customer
+Jane Smith,janesmith(at)example.com,123 456 7890,2022-12-01,Repeat customer
+Bob Williams, bob.williams@example.com,9876543210,15/08/2021,New entry
+Alice Johnson,alice.johnson@example,456-789-0123,2021-07-04,Check details
+John Doe,john.doe@example.com,(123)-456-7890,2023-03-15,Good customer
+Jane Smith,janesmith(at)example.com,123 456 7890,2022-12-01,Repeat customer
 Bob Williams,bob.williams@example.com,9876543210,15/08/2021,New entry
-Alice Johnson,Invalid email,456-789-0123,07/04/2021,Check details
+Alice Johnson,alice.johnson@example,456-789-0123,2021-07-04,Check details

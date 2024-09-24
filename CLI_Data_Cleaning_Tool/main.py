@@ -2,7 +2,7 @@ import csv
 import openpyxl
 import argparse
 import re
-import datetime
+from datetime import datetime
 from time import sleep
 from tqdm import tqdm
 from tkinter.filedialog import askopenfilename, asksaveasfilename
