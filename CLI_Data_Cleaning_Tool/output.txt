@@ -1,11 +1,8 @@
-first name last name
-NICKODHIAMBO
-NICKODHIAMBO
-NICKODHIAMBO
-NICKODHIAMBO
-NICKODHIAMBO
-NICKODHIAMBO
-NICKODHIAMBO
-NICKODHIAMBO
-NICKODHIAMBO
-NICKODHIAMBO
+NameEmail
+John Doejohn.doe@example.com
+Jane SmithInvalid email
+Bob WilliamsInvalid email
+Alice Johnsonalice.johnson@valid.com
+Invalid Userinvaliduser@wrongemail..com
+No DomainInvalid email
+EmptyInvalid email
