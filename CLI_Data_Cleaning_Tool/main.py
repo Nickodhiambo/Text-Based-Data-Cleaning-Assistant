@@ -176,6 +176,22 @@ def validate_and_format_dates(rows, date_format="%Y-%m-%d"):
         new_rows.append(new_row)
     return new_rows
 
+
+def check_missing_values(data, column_name):
+    """Checks for missing values in a specified column
+    and flags them"""
+    header, rows = data[0], data[1:]
+
+    try:
+        col_index = header.index(column_name)
+    except ValueError:
+        raise ValueError(f'Column {column_name} not found in header file {header}')
+    
+    for row in tqdm(rows, desc=f"Checking for missing values in {column_name}"):
+        if row[col_index] == None or row[col_index] == '':
+            row[col_index] = "Missing value"
+    return [header] + rows
+
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Text-Based Data Cleaning Assistant")
     parser.add_argument('--trim_whitespace', action='store_true', help='Trim leading and trailing whitespace')
@@ -184,6 +200,7 @@ def parse_arguments():
     parser.add_argument('--validate_email', help='Check email is valid')
     parser.add_argument('--standardize_phone', help='Standardize phone numbers')
     parser.add_argument('--format_date', action='store_true', help='Validate and format dates')
+    parser.add_argument("--check_missing", help="Check for missing values in a specific column", type=str)
     return parser.parse_args()
 
 
@@ -207,6 +224,8 @@ if __name__ == "__main__":
             data = standardize_phone_numbers(data, args.standardize_phone)
         if args.format_date:
             data = validate_and_format_dates(data)
+        if args.check_missing:
+            data = check_missing_values(data, args.check_missing)
 
     else:
         print("No data to process!")
