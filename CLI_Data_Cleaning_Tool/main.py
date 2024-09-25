@@ -192,6 +192,36 @@ def check_missing_values(data, column_name):
             row[col_index] = "Missing value"
     return [header] + rows
 
+
+def validate_data_type(data, column_name, expected_type):
+    """Validates data types in the specified column."""
+    header, rows = data[0], data[1:]
+    try:
+        col_index = header.index(column_name)
+    except ValueError:
+        raise ValueError(f"Column '{column_name}' not found in the file header: {header}")
+
+    # Define the type validation functions
+    type_checks = {
+        'int': lambda val: isinstance(val, int),
+        'float': lambda val: isinstance(val, float),
+        'string': lambda val: isinstance(val, str),
+        'date': lambda val: isinstance(val, datetime)
+    }
+
+    # Check if the expected_type is valid
+    if expected_type not in type_checks:
+        raise ValueError(
+            f"Unsupported type: '{expected_type}'. Supported types are: {list(type_checks.keys())}")
+
+    # Validate data type for each row
+    for row in rows:
+        value = row[col_index]
+        if not type_checks[expected_type](value):
+            row[col_index] = "Invalid type"
+    
+    return [header] + rows
+
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Text-Based Data Cleaning Assistant")
     parser.add_argument('--trim_whitespace', action='store_true', help='Trim leading and trailing whitespace')
@@ -201,6 +231,7 @@ def parse_arguments():
     parser.add_argument('--standardize_phone', help='Standardize phone numbers')
     parser.add_argument('--format_date', action='store_true', help='Validate and format dates')
     parser.add_argument("--check_missing", help="Check for missing values in a specific column", type=str)
+    parser.add_argument("--validate_type", help="Validate data type in a specific column", nargs=2, metavar=('column_name', 'type'))
     return parser.parse_args()
 
 
@@ -226,7 +257,10 @@ if __name__ == "__main__":
             data = validate_and_format_dates(data)
         if args.check_missing:
             data = check_missing_values(data, args.check_missing)
-
+        if args.validate_type:
+            column_name, expected_type = args.validate_type
+            print(f"Validating data type '{expected_type}' in column '{column_name}'...")
+            data = validate_data_type(data, column_name, expected_type)
     else:
         print("No data to process!")
 
