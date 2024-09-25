@@ -1,6 +1,6 @@
 NameEmail
 John Doejohn.doe@example.com
-Jane Smithjane.smith(at)example.com
+Jane Smith  jane.smith(at)example.com
 Bob Williamsbob.williams@domain
 Alice Johnsonalice.johnson@valid.com
 Invalid Userinvaliduser@wrongemail..com
@@ -12,4 +12,4 @@ Bob Williamsbob.williams@domain
 Alice Johnsonalice.johnson@valid.com
 Invalid Userinvaliduser@wrongemail..com
 No Domainnodomain@
-EmptyEmail
+EmptyMissing value
