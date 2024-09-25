@@ -1,8 +1,15 @@
 NameEmail
 John Doejohn.doe@example.com
-Jane SmithInvalid email
-Bob WilliamsInvalid email
+Jane Smithjane.smith(at)example.com
+Bob Williamsbob.williams@domain
 Alice Johnsonalice.johnson@valid.com
 Invalid Userinvaliduser@wrongemail..com
-No DomainInvalid email
-EmptyInvalid email
+No Domainnodomain@
+EmptyEmail
+John Doejohn.doe@example.com
+Jane Smithjane.smith(at)example.com
+Bob Williamsbob.williams@domain
+Alice Johnsonalice.johnson@valid.com
+Invalid Userinvaliduser@wrongemail..com
+No Domainnodomain@
+EmptyEmail

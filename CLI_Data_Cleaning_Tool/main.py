@@ -32,7 +32,7 @@ def read_excel(filepath):
     wb = openpyxl.load_workbook(filepath)
     ws = wb.active
     data = [[cell.value for cell in row] for row in ws.iter_rows()]
-    return data[1:]
+    return data
 
 def read_text_file(filepath):
     """Reads a text or log file line by line"""
@@ -60,6 +60,7 @@ def write_csv(filepath, data):
     print(f'Data successfully written to {filepath}')
 
 def write_excel(filepath, data):
+    print(data)
     wb = openpyxl.Workbook()
     ws = wb.active
     for row in data:
