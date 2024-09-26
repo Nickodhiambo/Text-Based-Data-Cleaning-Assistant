@@ -48,7 +48,7 @@ To use this tool, follow these steps:
     venv\Scripts\activate
 
     <!-- For linux -->
-    source venv\bin\activate
+    source venv/bin/activate
     ```
 
 3. Install required dependencies:
