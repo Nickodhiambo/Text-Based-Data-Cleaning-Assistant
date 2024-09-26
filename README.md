@@ -20,8 +20,6 @@ The tool allows you to pass specific flags from the command line to invoke vario
 
 ### Command-Line Arguments
 
-| Argument                      | Description                                                     |
-|-------------------------------------------------------------------------------------------------|
 | `--validate_email`                     | Validates email addresses in a specified column          |
 | `--standardize_phone`                  | Standardizes phone numbers in a specified column         |
 | `--format_dates`                       | Format dates in a specified column to a standard format  |
@@ -64,7 +62,7 @@ To use this tool, follow these steps:
 
 ## Usage
 
-Run the tool using the command line by specifying the flag corresponding to the function you want to execute.
+Run the tool using your favorite command line, by specifying the flag corresponding to the function you want to execute.
 
 ### Examples:
 
