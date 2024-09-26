@@ -38,7 +38,7 @@ To use this tool, follow these steps:
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/Nickodhiambo/Text-based-Data-Cleaning-Assistant.git
+   git clone https://github.com/Nickodhiambo/Text-Based-Data-Cleaning-Assistant.git
    ```
 
 2. Create a Python virtual environment
@@ -158,10 +158,6 @@ python main.py --validate_email Email --check_missing Email
 ## Contributing
 
 If you'd like to contribute, please fork the repository and submit a pull request. Feel free to suggest new features or report bugs through the issue tracker.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
 ## Acknowledgments
 
