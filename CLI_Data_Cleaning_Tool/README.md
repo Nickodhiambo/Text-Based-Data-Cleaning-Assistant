@@ -39,7 +39,6 @@ To use this tool, follow these steps:
 
    ```bash
    git clone https://github.com/Nickodhiambo/Text-based-Data-Cleaning-Assistant.git
-   cd CLI_Data_Cleaning_Tool
    ```
 
 2. Create a Python virtual environment
@@ -56,6 +55,11 @@ To use this tool, follow these steps:
 
    ```bash
    pip install -r requirements.txt
+   ```
+
+4. Change into project directory
+   ```bash
+   cd CLI_Data_Cleaning_Tool
    ```
 
 ## Usage

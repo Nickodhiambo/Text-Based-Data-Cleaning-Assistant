@@ -1,9 +1,0 @@
-Name,Email,Phone,Date,Notes
-John Doe,Missing value,(123)-456-7890,03/15/2023,Good customer
-Jane Smith,janesmith(at)example.com,123 456 7890,12/01/2022,Repeat customer
-Bob Williams, bob.williams@example.com,9876543210,15/08/2021,New entry
-Alice Johnson,alice.johnson@example,456-789-0123,07/04/2021,Check details
-John Doe,john.doe@example.com,(123)-456-7890,03/15/2023,Good customer
-Jane Smith,janesmith(at)example.com,123 456 7890,12/01/2022,Repeat customer
-Bob Williams,bob.williams@example.com,9876543210,15/08/2021,New entry
-Alice Johnson,alice.johnson@example,456-789-0123,07/04/2021,Check details
